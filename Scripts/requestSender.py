@@ -11,23 +11,6 @@ def sendRequest(values: array):
     arr = makeHeadersArray(values["-headers"])
     url = arr["url"]
     postHeaders: array = arr["data"]
-    getHeaders = postHeaders
-    getHeaders["Accept"] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
-    getHeaders["Referrer"] = "https://elib.maruzen.co.jp/elib/html/BookListDetail/search/true"
-    getHeaders["Cache-Control"] = "max-age=0"
-    getHeaders["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
-    getHeaders["Upgrade-Insecure-Requests"] = "1"
-    getHeaders["Sec-Fetch-User"] = "?1"
-    getHeaders["Sec-Fetch-Site"] = "same-origin"
-    getHeaders["Sec-Fetch-Mode"] = "navigate"
-    getHeaders["Sec-Fetch-Dest"] = "document"
-    del getHeaders["Content-Length"]
-    del getHeaders["Content-Type"]
-    del getHeaders["X-Requested-With"]
-    getRes = requests.get(
-        re.match("^[^\?]+", url).group(0), headers=getHeaders, timeout=5)
-    print(getRes.text)
-    name = re.match("\<title[^\>]*?\>([^｜]+)｜", getRes.text).group(1)
     postRes = requests.post(url, headers=postHeaders, data={
         "id": "", "changeScale": "1", "pageNumEditor": 5, "enterPageSubmit": 1})
     return postRes, "A"
