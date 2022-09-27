@@ -8,9 +8,7 @@ import json
 
 def sendRequest(values: array):
     checkValidations(values)
-    arr = makeHeadersArray(values["-headers"])
-    url = arr["url"]
-    postHeaders: array = arr["data"]
+    url, postHeaders = makeHeadersArray(values["-headers"])
     postRes = requests.post(url, headers=postHeaders, data={
         "id": "", "changeScale": "1", "pageNumEditor": 5, "enterPageSubmit": 1})
     return postRes, "A"
@@ -21,7 +19,7 @@ def checkValidations(values: array):
         raise Exception("Error code: 1-02; Page number is illegal")
 
 
-def makeHeadersArray(rawHeaders) -> array:
+def makeHeadersArray(rawHeaders):
     urlPattern = '.*?(\/elib/html\/Viewer\/Id\/\d+\?\d+\-\d+\.IBehaviorListener\.0\-browseForm\-enterPageSubmit)'
     reRes = re.match(urlPattern, rawHeaders)
     if (reRes == None):
@@ -33,4 +31,4 @@ def makeHeadersArray(rawHeaders) -> array:
     arr = {}
     for res in resultList:
         arr[res[0]] = res[1]
-    return {"url": url, "data": arr}
+    return url, arr
