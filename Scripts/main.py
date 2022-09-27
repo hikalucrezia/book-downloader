@@ -1,26 +1,13 @@
-import tkinter as tk
-import requests as rq
+import requests
+import PySimpleGUI as sg
+import layouts
+import eventHandler
+import os.path
 
 
 def main():
-    root = tk.Tk()
-    root.title("TEST OK")
-    root.geometry("640x480")
-
-    label = tk.Label(root, text="SHIT")
-
-    label.pack()
-
-    button = tk.Button()
-    button["text"] = "CLICK ME"
-    button["command"] = pri
-    button.pack()
-
-    root.mainloop()
-
-
-def pri():
-    print("FUCK YOU")
+    window: sg.Window = layouts.layLayouts()
+    eventHandler.handleEvents(window)
 
 
 if __name__ == "__main__":
