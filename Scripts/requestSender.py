@@ -3,27 +3,41 @@ from socket import gethostbyaddr
 from webbrowser import get
 import requests
 import re
-import json
+import os
+import PySimpleGUI as sg
 
 
-def sendRequest(values: array):
-    checkValidations(values)
+def sendRequest(values: array, page: int):
     url, postHeaders = makeHeadersArray(values["-headers"])
     postRes = requests.post(url, headers=postHeaders, data={
-        "id": "", "changeScale": "1", "pageNumEditor": 5, "enterPageSubmit": 1})
-    return postRes, "A"
+        "id": "", "changeScale": "1", "pageNumEditor": page, "enterPageSubmit": 1})
+    return postRes
 
 
 def checkValidations(values: array):
-    if (values["-firstpage"] == '' or values["-finalpage"] == '' or int(values["-firstpage"]) >= int(values["-finalpage"]) or int(values["-firstpage"]) < 1):
-        raise Exception("Error code: 1-02; Page number is illegal")
+    if values["-firstpage"] == '':
+        sg.popup_error('Error code: 3-01; First page value empty')
+        return False
+    elif values["-finalpage"] == '':
+        sg.popup_error('Error code: 3-02; Final page value empty')
+        return False
+    elif int(values["-firstpage"]) >= int(values["-finalpage"]):
+        sg.popup_error('Error code: 3-03; Final page value the same or above first page value')
+        return False
+    elif int(values["-firstpage"]) < 1:
+        sg.popup_error('Error code: 3-04; First page value cannot be smaller value than 1')
+        return False
+    elif os.path.exists(os.getcwd() + "/"+values["-foldername"]):
+        sg.popup_error('Error code: 3-05; This folder already exists')
+        return False
+    return True
 
 
 def makeHeadersArray(rawHeaders):
     urlPattern = '.*?(\/elib/html\/Viewer\/Id\/\d+\?\d+\-\d+\.IBehaviorListener\.0\-browseForm\-enterPageSubmit)'
     reRes = re.match(urlPattern, rawHeaders)
     if (reRes == None):
-        raise Exception(
+        sg.popup_error(
             "Error code: 1-01; Header request input not appropriate")
     url = 'https://elib.maruzen.co.jp' + reRes.group(1)
     paramPattern = '\n\s*?([^:]+)\s*?:\s*?([^\s][^\n]+)'
