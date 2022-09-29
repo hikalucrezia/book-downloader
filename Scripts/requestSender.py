@@ -5,12 +5,13 @@ import requests
 import re
 import os
 import PySimpleGUI as sg
+import binascii
 
 
-def sendRequest(values: array, page: int):
+def sendRequest(values: array, page: int, ranStr:str):
     url, postHeaders = makeHeadersArray(values["-headers"])
     postRes = requests.post(url, headers=postHeaders, data={
-        "id": "", "changeScale": "1", "pageNumEditor": page, "enterPageSubmit": 1})
+        "id"+ranStr+"_hf_0": "", "changeScale": "1", "pageNumEditor": page, "enterPageSubmit": 1})
     return postRes
 
 

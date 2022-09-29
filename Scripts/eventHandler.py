@@ -8,6 +8,8 @@ import requests
 from PIL import Image
 import io
 from glob import glob
+import binascii
+import layouts
 
 def handleEvents(window):
     while True:
@@ -15,13 +17,14 @@ def handleEvents(window):
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
         elif event == "Go":
+            ranStr:str=str(binascii.b2a_hex(os.urandom(15)))
             if requestSender.checkValidations(values):
                 imgPattern='^.*(\/kikan\_info\/GetImg\.jpg\?id\=\d+)[^\d]*'
                 folderName=os.getcwd() + "/"+values["-foldername"]
                 os.makedirs(folderName, exist_ok=False)
                 firstpage, finalpage=int(values["-firstpage"]), int(values["-finalpage"])
                 for i in range(firstpage, finalpage+1):
-                    responce = requestSender.sendRequest(values, i)
+                    responce = requestSender.sendRequest(values, i,ranStr)
                     if responce == None:
                         sg.popup_error("Error code: 2-02; Responce not returned at all. Try reloading the page and follow the instructions again")
                         break
@@ -46,6 +49,7 @@ def handleEvents(window):
                             sg.popup("Succesfully downloaded all the images")
                             window['progress'].UpdateBar(0)
                     else:
-                        sg.popup_error('Error code: 2-01; Desired responce not returned. Try reloading the page and follow the instructions again')
+                        sg.popup_error('Error code: 2-01; Desired responce not returned. Try reloading the page and follow the instructions again. Or, if you put the exceeding value in the final page value and the files are now all there, the process have been finished succesfully')
                         break
+            window["-foldername"].update(layouts.getRanNumAndToStr(10000,99999))
     window.close()

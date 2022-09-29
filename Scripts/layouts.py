@@ -13,8 +13,7 @@ def layLayouts() -> sg.Window:
         [sg.Multiline(size=(100, 20), key="-headers")],
         [
             sg.Text("Folder name:"),
-            sg.InputText(default_text=str(random.randint(100000,
-                                                         999999)), size=(60, 1), key="-foldername")
+            sg.InputText(default_text=str(getRanNumAndToStr(10000,99999)), size=(60, 1), key="-foldername")
         ],
         [
             sg.Text("Pages: From"),
@@ -42,3 +41,6 @@ def layLayouts() -> sg.Window:
 
     window = sg.Window("Maruzen Book Downloader", layout)
     return window
+
+def getRanNumAndToStr(min, max) -> str:
+    return str(random.randint(100000, 999999))
