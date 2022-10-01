@@ -1,4 +1,0 @@
-cannot unpack non-iterable NoneType object
-
-cannot unpack non-iterable NoneType object
-
