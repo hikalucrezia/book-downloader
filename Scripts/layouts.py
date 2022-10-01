@@ -1,6 +1,6 @@
+import os
 import random
 import PySimpleGUI as sg
-import os.path
 
 # First the window layout in 2 columns
 
@@ -13,7 +13,8 @@ def layLayouts() -> sg.Window:
         [sg.Multiline(size=(100, 20), key="-headers")],
         [
             sg.Text("Folder name:"),
-            sg.InputText(default_text=str(getRanNumAndToStr(10000,99999)), size=(60, 1), key="-foldername")
+            sg.InputText(default_text=str(getRanNumAndToStr(
+                10000, 99999)), size=(60, 1), key="-foldername")
         ],
         [
             sg.Text("Pages: From"),
@@ -24,7 +25,8 @@ def layLayouts() -> sg.Window:
     ]
 
     image_viewer_column = [
-        [sg.Image(key="-image", enable_events=True, expand_x=False, expand_y=False, size=(400, 300))],
+        [sg.Image(key="-image", enable_events=True, expand_x=False,
+                  expand_y=False, size=(400, 300))],
     ]
 
     layout = [
@@ -34,13 +36,16 @@ def layLayouts() -> sg.Window:
             sg.Column(image_viewer_column),
         ],
         [
-            sg.ProgressBar(max_value=1, orientation='h', size=(40, 10), key='progress'),
+            sg.ProgressBar(max_value=1, orientation='h',
+                           size=(40, 10), key='progress'),
             sg.Button(button_text="Go"),
         ]
     ]
 
-    window = sg.Window("Maruzen Book Downloader", layout)
+    window = sg.Window("Maruzen Book Downloader",
+                       icon=os.getcwd()+'/meow.ico').Layout(layout)
     return window
+
 
 def getRanNumAndToStr(min, max) -> str:
     return str(random.randint(100000, 999999))
